@@ -1,21 +1,38 @@
 import { createClient } from "@/lib/supabase/server";
 
-export async function isAdmin(): Promise<boolean> {
+export type UserRole = 'user' | 'admin';
+
+export interface UserProfile {
+  id: string;
+  email: string;
+  role: UserRole;
+}
+
+export async function getUserProfile(): Promise<UserProfile | null> {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user || !user.email) {
-    return false;
+    return null;
   }
 
-  const adminEmail = process.env.ADMIN_EMAIL;
-  
-  if (!adminEmail) {
-    console.error("ADMIN_EMAIL is not set in environment variables");
-    return false;
+  const { data: profile, error } = await supabase
+    .from("profiles")
+    .select("id, email, role")
+    .eq("id", user.id)
+    .single();
+
+  if (error || !profile) {
+    console.error("Error fetching user profile:", error?.message);
+    return null;
   }
 
-  return user.email.toLowerCase() === adminEmail.toLowerCase();
+  return profile as UserProfile;
+}
+
+export async function isAdmin(): Promise<boolean> {
+  const profile = await getUserProfile();
+  return profile?.role === 'admin';
 }
 
 export async function requireAdmin(): Promise<void> {

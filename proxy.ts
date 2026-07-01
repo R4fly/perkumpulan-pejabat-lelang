@@ -21,20 +21,24 @@ export async function proxy(request: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser();
 
-  // Proteksi route /admin - hanya admin yang bisa akses
+  // Proteksi route /admin
   if (request.nextUrl.pathname.startsWith('/admin')) {
     if (!user) {
       // Belum login, redirect ke /login
       const url = request.nextUrl.clone();
       url.pathname = '/login';
-      url.searchParams.set('redirect', '/admin');
       return NextResponse.redirect(url);
     }
 
-    // Sudah login, cek apakah admin
-    const adminEmail = process.env.ADMIN_EMAIL;
-    if (!adminEmail || user.email?.toLowerCase() !== adminEmail.toLowerCase()) {
-      // Bukan admin, redirect ke halaman utama dengan pesan error
+    // Sudah login, cek role di database
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single();
+
+    if (!profile || profile.role !== 'admin') {
+      // Bukan admin, redirect ke halaman utama
       const url = request.nextUrl.clone();
       url.pathname = '/';
       url.searchParams.set('error', 'unauthorized');

@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { createAnnouncement, deleteAnnouncement } from "@/lib/services/admin";
-import { isAdmin } from "@/lib/auth";
+import { getUserProfile } from "@/lib/auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,14 +12,13 @@ export default async function AdminPage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-  // Double-check: jika tidak login, redirect
   if (!user) {
     redirect("/login");
   }
 
-  // Validasi admin
-  const isUserAdmin = await isAdmin();
-  if (!isUserAdmin) {
+  const profile = await getUserProfile();
+  
+  if (!profile || profile.role !== 'admin') {
     return (
       <main className="container mx-auto px-4 py-12">
         <div className="max-w-md mx-auto">
@@ -38,7 +37,6 @@ export default async function AdminPage() {
     );
   }
 
-  // User adalah admin, tampilkan dashboard
   const { data: announcements } = await supabase
     .from("announcements")
     .select("*")
@@ -50,6 +48,9 @@ export default async function AdminPage() {
         <h1 className="text-3xl font-bold text-djkn-800">Admin Dashboard</h1>
         <p className="text-djkn-600 mt-2">
           Login sebagai: <span className="font-semibold">{user.email}</span>
+          <span className="ml-2 px-2 py-1 bg-djkn-100 text-djkn-700 rounded text-xs font-medium">
+            {profile.role}
+          </span>
         </p>
       </div>
       

@@ -5,7 +5,6 @@ import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/auth";
 
 export async function createAnnouncement(formData: FormData) {
-  // Validasi admin sebelum melakukan operasi
   await requireAdmin();
 
   const supabase = await createClient();
@@ -26,7 +25,6 @@ export async function createAnnouncement(formData: FormData) {
 }
 
 export async function deleteAnnouncement(id: string) {
-  // Validasi admin sebelum melakukan operasi
   await requireAdmin();
 
   const supabase = await createClient();
