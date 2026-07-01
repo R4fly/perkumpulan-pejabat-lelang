@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,7 +17,17 @@ export default function LoginPage() {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   
   const router = useRouter();
+  const searchParams = useSearchParams();
   const supabase = createClient();
+
+  // Handle redirect setelah login
+  useEffect(() => {
+    const redirect = searchParams.get('redirect');
+    if (redirect) {
+      // Simpan redirect URL untuk digunakan setelah login
+      sessionStorage.setItem('redirect_after_login', redirect);
+    }
+  }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,8 +42,17 @@ export default function LoginPage() {
           password,
         });
         if (error) throw error;
+        
         router.refresh();
-        router.push("/");
+        
+        // Cek apakah ada redirect URL
+        const redirectUrl = sessionStorage.getItem('redirect_after_login');
+        if (redirectUrl) {
+          sessionStorage.removeItem('redirect_after_login');
+          router.push(redirectUrl);
+        } else {
+          router.push("/");
+        }
       } else {
         const { error } = await supabase.auth.signUp({
           email,
@@ -46,7 +65,6 @@ export default function LoginPage() {
       }
     } catch (err: unknown) {
       if (err instanceof Error) {
-        // Terjemahkan error umum Supabase ke bahasa Indonesia
         if (err.message.includes("Invalid login credentials")) {
           setError("Email atau password salah.");
         } else if (err.message.includes("User already registered")) {
