@@ -25,10 +25,9 @@ export default function LoginPage() {
     const checkUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
-        // User sudah login, redirect ke home
-        router.push("/");
+        // User sudah login, redirect ke dashboard
+        router.push("/dashboard");
       } else {
-        // User belum login, tampilkan form
         setIsCheckingAuth(false);
       }
     };
@@ -50,16 +49,22 @@ export default function LoginPage() {
         if (error) throw error;
         
         router.refresh();
-        router.push("/");
+        // Redirect ke dashboard setelah login
+        router.push("/dashboard");
       } else {
         const { error } = await supabase.auth.signUp({
           email,
           password,
         });
         if (error) throw error;
-        setSuccessMessage("Registrasi berhasil! Silakan cek email Anda untuk verifikasi akun.");
+        setSuccessMessage("Registrasi berhasil! Silakan cek email Anda untuk verifikasi akun. Setelah verifikasi, Anda bisa login.");
         setEmail("");
         setPassword("");
+        // Switch to login mode after 3 seconds
+        setTimeout(() => {
+          setIsLoginMode(true);
+          setSuccessMessage(null);
+        }, 5000);
       }
     } catch (err: unknown) {
       if (err instanceof Error) {
@@ -80,7 +85,6 @@ export default function LoginPage() {
     }
   };
 
-  // Tampilkan loading saat mengecek auth status
   if (isCheckingAuth) {
     return (
       <main className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-djkn-50 px-4 py-12">

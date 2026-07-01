@@ -20,17 +20,26 @@ export async function proxy(request: NextRequest) {
   );
 
   const { data: { user } } = await supabase.auth.getUser();
+  const pathname = request.nextUrl.pathname;
 
-  // Proteksi route /admin
-  if (request.nextUrl.pathname.startsWith('/admin')) {
+  // Proteksi route /dashboard - hanya user yang login bisa akses
+  if (pathname.startsWith('/dashboard')) {
     if (!user) {
-      // Belum login, redirect ke /login
+      const url = request.nextUrl.clone();
+      url.pathname = '/login';
+      return NextResponse.redirect(url);
+    }
+  }
+
+  // Proteksi route /admin - hanya admin yang bisa akses
+  if (pathname.startsWith('/admin')) {
+    if (!user) {
       const url = request.nextUrl.clone();
       url.pathname = '/login';
       return NextResponse.redirect(url);
     }
 
-    // Sudah login, cek role di database
+    // Cek role admin
     const { data: profile } = await supabase
       .from('profiles')
       .select('role')
@@ -38,9 +47,8 @@ export async function proxy(request: NextRequest) {
       .single();
 
     if (!profile || profile.role !== 'admin') {
-      // Bukan admin, redirect ke halaman utama
       const url = request.nextUrl.clone();
-      url.pathname = '/';
+      url.pathname = '/dashboard';
       url.searchParams.set('error', 'unauthorized');
       return NextResponse.redirect(url);
     }
