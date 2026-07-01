@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -12,12 +12,28 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isLoginMode, setIsLoginMode] = useState(true);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   
   const router = useRouter();
   const supabase = createClient();
+
+  // Cek apakah user sudah login saat component mount
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        // User sudah login, redirect ke home
+        router.push("/");
+      } else {
+        // User belum login, tampilkan form
+        setIsCheckingAuth(false);
+      }
+    };
+    checkUser();
+  }, [supabase, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,6 +67,8 @@ export default function LoginPage() {
           setError("Email atau password salah.");
         } else if (err.message.includes("User already registered")) {
           setError("Email ini sudah terdaftar.");
+        } else if (err.message.includes("Email not confirmed")) {
+          setError("Email belum diverifikasi. Silakan cek inbox Anda.");
         } else {
           setError(err.message);
         }
@@ -61,6 +79,18 @@ export default function LoginPage() {
       setIsLoading(false);
     }
   };
+
+  // Tampilkan loading saat mengecek auth status
+  if (isCheckingAuth) {
+    return (
+      <main className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-djkn-50 px-4 py-12">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-djkn-700 mx-auto"></div>
+          <p className="mt-4 text-djkn-600">Memeriksa status login...</p>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-djkn-50 px-4 py-12">
