@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -17,20 +17,43 @@ export function SearchBar({
 }: SearchBarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [searchTerm, setSearchTerm] = useState(searchParams.get("search") || "");
+  const initialSearch = searchParams.get("search") || "";
+  const [searchTerm, setSearchTerm] = useState(initialSearch);
+  
+  // Track previous search term untuk menghindari unnecessary updates
+  const prevSearchRef = useRef(initialSearch);
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
+    // Skip first render untuk menghindari trigger saat mount
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
+    // Skip jika searchTerm tidak berubah dari URL saat ini
+    if (searchTerm === prevSearchRef.current) {
+      return;
+    }
+
     const timer = setTimeout(() => {
       const params = new URLSearchParams(searchParams.toString());
+      const currentSearch = params.get("search") || "";
       
-      if (searchTerm.trim()) {
-        params.set("search", searchTerm.trim());
-        params.set("page", "1"); // Reset ke halaman 1 saat search
-      } else {
-        params.delete("search");
-      }
+      // Hanya update URL jika searchTerm benar-benar berbeda
+      if (searchTerm.trim() !== currentSearch) {
+        if (searchTerm.trim()) {
+          params.set("search", searchTerm.trim());
+          params.set("page", "1"); // Reset ke halaman 1 saat search
+        } else {
+          params.delete("search");
+          params.set("page", "1");
+        }
 
-      router.push(`?${params.toString()}`);
+        // Gunakan replace alih-alih push untuk menghindari menambah history stack
+        router.replace(`?${params.toString()}`, { scroll: false });
+        prevSearchRef.current = searchTerm;
+      }
     }, debounceMs);
 
     return () => clearTimeout(timer);
@@ -41,7 +64,8 @@ export function SearchBar({
     const params = new URLSearchParams(searchParams.toString());
     params.delete("search");
     params.set("page", "1");
-    router.push(`?${params.toString()}`);
+    router.replace(`?${params.toString()}`, { scroll: false });
+    prevSearchRef.current = "";
   };
 
   return (
