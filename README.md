@@ -1,36 +1,466 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
+  <img src="public/djkn.jpeg" alt="Logo DJKN" width="120" height="120" style="border-radius: 50%;" />
+  
+  <h1>Perkumpulan Pejabat Lelang (PPL)</h1>
+  
+  <p>
+    <strong>Website Resmi Perkumpulan Pejabat Lelang Indonesia</strong>
+  </p>
+  
+  <p>
+    Platform digital modern untuk mengelola pengumuman, peraturan, dan keanggotaan 
+    Perkumpulan Pejabat Lelang dengan sistem autentikasi yang aman dan dashboard interaktif.
+  </p>
 
-## Getting Started
+  <p>
+    <a href="#fitur">Fitur</a> •
+    <a href="#tech-stack">Tech Stack</a> •
+    <a href="#instalasi">Instalasi</a> •
+    <a href="#usage">Usage</a> •
+    <a href="#deployment">Deployment</a>
+  </p>
 
-First, run the development server:
+  <br />
+
+  <!-- Tech Stack Badges -->
+  [![Next.js](https://img.shields.io/badge/Next.js-16.2.9-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+  [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+  [![Supabase](https://img.shields.io/badge/Supabase-Database-3ECF8E?style=for-the-badge&logo=supabase)](https://supabase.com/)
+  [![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.0-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
+  [![shadcn/ui](https://img.shields.io/badge/shadcn/ui-Latest-black?style=for-the-badge)](https://ui.shadcn.com/)
+  [![Vercel](https://img.shields.io/badge/Deployed-Vercel-000000?style=for-the-badge&logo=vercel)](https://vercel.com/)
+
+  <br />
+
+  <!-- Project Status Badges -->
+  [![License](https://img.shields.io/badge/License-Proprietary-red?style=for-the-badge)]()
+  [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=for-the-badge)]()
+
+</div>
+
+---
+
+## 📸 Screenshots
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center">
+        <img src="public/ss1.png" alt="Landing Page" width="100%" />
+        <br />
+        <em>Landing Page</em>
+      </td>
+      <td align="center">
+        <img src="public/ss2.png" alt="Dashboard" width="100%" />
+        <br />
+        <em>User Dashboard</em>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <img src="public/ss3.png" alt="Pengumuman" width="100%" />
+        <br />
+        <em>Halaman Pengumuman</em>
+      </td>
+      <td align="center">
+        <img src="public/ss4.png" alt="Admin Panel" width="100%" />
+        <br />
+        <em>Admin Dashboard</em>
+      </td>
+    </tr>
+  </table>
+</div>
+---
+
+## ✨ Fitur
+
+### 🌐 Public Features
+- **Landing Page Modern** - Hero section dengan animasi premium menggunakan Framer Motion
+- **Pengumuman & Peraturan** - Card grid dengan search dan pagination
+- **Tentang Kami** - Informasi lengkap organisasi dengan Bento Grid layout
+- **Responsive Design** - Optimal di semua ukuran layar (mobile-first)
+- **SEO Optimized** - Metadata lengkap dan semantic HTML
+
+### 🔐 Authentication & Authorization
+- **Supabase Auth** - Sistem autentikasi yang aman dan scalable
+- **Role-Based Access Control** - Pemisahan hak akses antara user dan admin
+- **Protected Routes** - Middleware-based route protection
+- **Email Verification** - Verifikasi email otomatis saat registrasi
+
+### 👤 User Dashboard
+- **Profil Akun** - Informasi user dan status keanggotaan
+- **Quick Access** - Akses cepat ke fitur utama
+- **Recent Announcements** - Pengumuman terbaru di dashboard
+- **Logout Secure** - Server-side logout dengan session clearing
+
+### 🛠️ Admin Dashboard
+- **CRUD Operations** - Kelola pengumuman dan peraturan dengan mudah
+- **Form Validation** - Validasi client-side yang robust
+- **Confirmation Dialog** - Mencegah accidental delete
+- **Toast Notifications** - Feedback visual untuk semua operasi
+- **Real-time Updates** - Data refresh tanpa reload halaman
+
+### 🎨 UI/UX Excellence
+- **Loading States** - Skeleton loading untuk semua halaman dinamis
+- **Error Boundaries** - Graceful error handling dengan retry mechanism
+- **Smooth Animations** - Staggered entrance animations
+- **Professional Design** - Palet warna DJKN yang konsisten
+
+---
+
+## 🚀 Tech Stack
+
+### Frontend
+- **Framework:** [Next.js 16](https://nextjs.org/) (App Router)
+- **Language:** [TypeScript](https://www.typescriptlang.org/) 5.0
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/) 4.0
+- **UI Components:** [shadcn/ui](https://ui.shadcn.com/)
+- **Animations:** [Framer Motion](https://www.framer.com/motion/)
+- **Icons:** [Lucide React](https://lucide.dev/)
+
+### Backend & Database
+- **Database:** [Supabase](https://supabase.com/) (PostgreSQL)
+- **Authentication:** Supabase Auth
+- **Row Level Security:** Database-level access control
+- **Storage:** Supabase Storage (untuk gambar)
+
+### Development Tools
+- **Package Manager:** npm
+- **Linting:** ESLint
+- **Type Checking:** TypeScript strict mode
+- **Deployment:** [Vercel](https://vercel.com/)
+
+---
+
+## 📋 Prerequisites
+
+Sebelum memulai, pastikan Anda telah menginstall:
+
+- **Node.js** 18.17 atau lebih tinggi ([Download](https://nodejs.org/))
+- **npm** 9.0 atau lebih tinggi
+- **Git** ([Download](https://git-scm.com/))
+- **Akun Supabase** ([Daftar Gratis](https://supabase.com/))
+
+---
+
+## 🔧 Instalasi
+
+### 1. Clone Repository
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/R4fly/perkumpulan-pejabat-lelang.git
+cd perkumpulan-pejabat-lelang
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install Dependencies
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Setup Environment Variables
+```bash
+cp .env.example .env.local
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Isi variabel berikut:
+```env
+# Supabase Configuration
+NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
 
-## Learn More
+# Admin Configuration
+ADMIN_EMAIL=admin@ppl-indonesia.org
+```
 
-To learn more about Next.js, take a look at the following resources:
+**Cara mendapatkan Supabase credentials:**
+1. Buat proyek baru di [Supabase Dashboard](https://supabase.com)
+2. Buka **Settings → API**
+3. Copy **Project URL** dan **anon/public key**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 4. Setup Database
+Buka **SQL Editor** di Supabase Dashboard dan jalankan script berikut:
+```sql
+-- 1. Buat tabel announcements
+create table announcements (
+  id uuid default gen_random_uuid() primary key,
+  title text not null,
+  description text,
+  image_url text,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+-- 2. Buat tabel regulations
+create table regulations (
+  id uuid default gen_random_uuid() primary key,
+  title text not null,
+  description text,
+  file_url text,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
 
-## Deploy on Vercel
+-- 3. Buat tabel profiles
+create table public.profiles (
+  id uuid references auth.users on delete cascade primary key,
+  email text unique not null,
+  role text default 'user' check (role in ('user', 'admin')),
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  updated_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+-- 4. Aktifkan RLS
+alter table announcements enable row level security;
+alter table regulations enable row level security;
+alter table public.profiles enable row level security;
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+-- 5. Buat policies untuk announcements
+create policy "Public read access on announcements"
+  on announcements for select using (true);
+
+create policy "Admins can insert announcements"
+  on announcements for insert
+  with check (exists (select 1 from public.profiles where id = auth.uid() and role = 'admin'));
+
+create policy "Admins can update announcements"
+  on announcements for update
+  using (exists (select 1 from public.profiles where id = auth.uid() and role = 'admin'));
+
+create policy "Admins can delete announcements"
+  on announcements for delete
+  using (exists (select 1 from public.profiles where id = auth.uid() and role = 'admin'));
+
+-- 6. Buat policies untuk regulations
+create policy "Public read access on regulations"
+  on regulations for select using (true);
+
+create policy "Admins can insert regulations"
+  on regulations for insert
+  with check (exists (select 1 from public.profiles where id = auth.uid() and role = 'admin'));
+
+create policy "Admins can update regulations"
+  on regulations for update
+  using (exists (select 1 from public.profiles where id = auth.uid() and role = 'admin'));
+
+create policy "Admins can delete regulations"
+  on regulations for delete
+  using (exists (select 1 from public.profiles where id = auth.uid() and role = 'admin'));
+
+-- 7. Buat policies untuk profiles
+create policy "Users can view own profile"
+  on public.profiles for select
+  using (auth.uid() = id);
+
+create policy "Users can update own profile"
+  on public.profiles for update
+  using (auth.uid() = id);
+
+-- 8. Fungsi untuk handle user signup
+create or replace function public.handle_new_user()
+returns trigger as $$
+begin
+  insert into public.profiles (id, email, role)
+  values (new.id, new.email, 'user');
+  return new;
+end;
+$$ language plpgsql security definer;
+
+-- 9. Trigger untuk auto-create profile
+create trigger on_auth_user_created
+  after insert on auth.users
+  for each row execute procedure public.handle_new_user();
+
+-- 10. Fungsi helper untuk cek admin (bypass RLS)
+create or replace function public.is_admin(user_id uuid)
+returns boolean 
+language sql 
+security definer
+set search_path = public
+as $$
+  select exists (
+    select 1 from public.profiles
+    where id = user_id and role = 'admin'
+  );
+$$;
+
+-- 11. Grant permission
+grant execute on function public.is_admin(uuid) to authenticated;
+```
+
+### 5. Set Admin Role
+Setelah mendaftar melalui website, jalankan SQL ini untuk set role admin:
+```sql
+UPDATE public.profiles
+SET role = 'admin'
+WHERE email = 'email-admin-anda@email.com';
+```
+
+### 6. Jalankan Development Server
+```bash
+npm run dev
+```
+
+Buka http://localhost:3000 di browser Anda.
+
+---
+
+### 📖 Usage
+**Untuk User Biasa**
+1. **Registrasi** - Buka /login dan klik "Daftar di sini"
+2. **Verifikasi** Email - Cek inbox dan klik link verifikasi
+3. **Login** - Masuk dengan email dan password
+4. **Dashboard** - Akses /dashboard untuk melihat info akun
+5. **Browse Content** - Jelajahi pengumuman dan peraturan
+
+**Untuk Admin**
+1. **Login sebagai Admin** - Gunakan akun yang sudah di-set role admin
+2. **Akses Admin Panel** - Klik "Admin Panel" di dashboard
+3. **Kelola Konten** - Tambah, edit, atau hapus pengumuman/peraturan
+4. **Monitor** - Lihat daftar semua konten yang telah diunggah
+---
+
+### Project Structure
+```
+perkumpulan-pejabat-lelang/
+├── app/
+│   ├── admin/              # Admin dashboard
+│   ├── api/                # API routes
+│   ├── dashboard/          # User dashboard
+│   ├── login/              # Login/Register page
+│   ├── pengumuman/         # Announcements page
+│   ├── peraturan/          # Regulations page
+│   ├── tentang/            # About page
+│   ├── layout.tsx          # Root layout
+│   ├── page.tsx            # Landing page
+│   └── globals.css         # Global styles
+├── components/
+│   ├── layout/             # Layout components (Navbar, Footer)
+│   ├── landing/            # Landing page sections
+│   └── ui/                 # shadcn/ui components
+├── lib/
+│   ├── services/           # Data fetching services
+│   ├── supabase/           # Supabase client utilities
+│   ├── auth.ts             # Auth utilities
+│   ├── validation.ts       # Form validation
+│   └── utils.ts            # Helper functions
+├── public/                 # Static assets
+├── proxy.ts                # Middleware for route protection
+├── next.config.ts          # Next.js configuration
+├── tailwind.config.ts      # Tailwind configuration
+└── package.json            # Dependencies
+```
+---
+
+### 🌐 Deployment
+### Deploy ke Vercel (Recommended)
+Cara termudah untuk deploy adalah [menggunakan Vercel Platform](https://vercel.com):
+1. **Push ke Github**
+```bash
+git add .
+git commit -m "Initial commit"
+git push origin main
+```
+
+2. **Import di Vercel**
+- Buka [Vercel Dashboard](https://vercel.com)
+- Klik **"New Project"**
+- Import repository GitHub Anda
+- Vercel akan otomatis detect Next.js
+
+3. **Configure Environment Variables**
+Di Vercel Dashboard → Settings → Environment Variables, tambahkan:
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+ADMIN_EMAIL=admin@ppl-indonesia.org
+```
+
+4. **Deploy**
+- Klik **"Deploy"**
+- Tunggu proses deployment selesai
+- Website Anda akan live di https://your-project.vercel.app
+
+5. **Alternative: Deploy Manual**
+```bash
+npm run build
+npm run start
+```
+---
+
+### 🧪 Testing
+**Manual Testing Checklist**
+- Landing page loads correctly
+- Navigation links work
+- User registration flow
+- Email verification
+- User login/logout
+- Dashboard access
+- Admin panel access
+- Create announcement
+- Delete announcement
+- Search functionality
+- Pagination
+- Responsive design (mobile/tablet/desktop)
+
+---
+
+### 🤝 Contributing
+Contributions, issues, dan feature requests sangat diterima!
+1. Fork repository ini
+2. Buat branch fitur baru (```git checkout -b feature/AmazingFeature```)
+3. Commit perubahan (```git commit -m 'Add some AmazingFeature'```)
+4. Push ke branch (```git push origin feature/AmazingFeature```)
+5. Buka Pull Request
+
+---
+
+### 📝 License
+Proyek ini dibuat untuk **Perkumpulan Pejabat Lelang (PPL)** dan bersifat proprietary.
+
+---
+
+### 🙏 Acknowledgments
+- [Next.js](https://nextjs.org) - Framework React terbaik
+- [Supabase](https://supabase.com) - Backend-as-a-Service open source
+- [shadcn/ui](https://ui.shadcn.com) - Komponen UI yang beautiful
+- [Tailwind CSS](https://tailwindcss.com) - Utility-first CSS framework
+- [Framer Motion](https://www.framer.com/motion) - Library animasi untuk React
+- [Lucide](https://lucide.dev) - Icon set yang modern
+- [Vercel](https://vercel.com) - Platform deployment terbaik
+
+---
+
+📞 Contact
+- Perkumpulan Pejabat Lelang (PPL)
+- Instagram: @pejabatlelang.id
+- Website: [www.ppl-indonesia.org](www.ppl-indonesia.org)
+
+---
+
+### 📊 Project Status
+✅ **Version 1.0.0** - Production Ready
+- ✅ Authentication & Authorization
+- ✅ User Dashboard
+- ✅ Admin Dashboard
+- ✅ CRUD Operations
+- ✅ Search & Pagination
+- ✅ Responsive Design
+- ✅ SEO Optimized
+- ✅ Deployed to Vercel
+
+---
+
+<div align="center">
+  <p>
+    Dibuat dengan ❤️ oleh <strong>Muhammad Rafly Baehaqi</strong>
+  </p>
+  <p>
+    <a href="https://www.npmjs.com/~baehaqirafly3" target="_blank" rel="noopener noreferrer">
+      <img src="https://img.shields.io/badge/npm-baehaqirafly3-CB3837?style=for-the-badge&logo=npm&logoColor=white" alt="NPM Profile" />
+    </a>
+    <a href="https://github.com/R4fly" target="_blank" rel="noopener noreferrer">
+      <img src="https://img.shields.io/badge/GitHub-R4fly-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub Profile" />
+    </a>
+  </p>
+  <p>
+    <sub>© 2026 Perkumpulan Pejabat Lelang. All rights reserved.</sub>
+  </p>
+</div>
