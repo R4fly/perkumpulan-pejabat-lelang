@@ -183,29 +183,32 @@ export function AdminDashboardClient({ initialAnnouncements }: AdminDashboardCli
             {announcements.length === 0 ? (
               <p className="text-center text-djkn-600 py-4">Belum ada pengumuman.</p>
             ) : (
-              announcements.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex items-center justify-between p-3 border border-djkn-100 rounded-lg hover:bg-djkn-50 transition-colors"
-                >
-                  <div className="flex-1 pr-4">
-                    <p className="font-semibold text-djkn-800 truncate">
-                      {item.title}
-                    </p>
-                    <p className="text-sm text-djkn-600 truncate">
-                      {item.description}
-                    </p>
-                  </div>
-                  <Button
-                    onClick={() => handleDeleteClick(item.id, item.title)}
-                    variant="destructive"
-                    size="sm"
-                    disabled={isPending}
+              <div className="space-y-3">
+                {announcements.map((item) => (
+                  <div
+                    key={item.id}
+                    className="flex items-start gap-3 p-4 border border-djkn-100 rounded-lg hover:bg-djkn-50 transition-colors"
                   >
-                    Hapus
-                  </Button>
-                </div>
-              ))
+                    <div className="flex-1 min-w-0 space-y-1">
+                      <p className="font-semibold text-djkn-800 truncate">
+                        {item.title}
+                      </p>
+                      <p className="text-sm text-djkn-600 line-clamp-2">
+                        {item.description}
+                      </p>
+                    </div>
+                    <Button
+                      onClick={() => handleDeleteClick(item.id, item.title)}
+                      variant="destructive"
+                      size="sm"
+                      disabled={isPending}
+                      className="shrink-0"
+                    >
+                      Hapus
+                    </Button>
+                  </div>
+                ))}
+              </div>
             )}
           </CardContent>
         </Card>

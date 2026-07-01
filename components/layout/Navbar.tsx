@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { SITE_CONFIG } from "@/lib/types";
 import { createClient } from "@/lib/supabase/server";
+import { LogoutButton } from "./logout-button";
 
 export async function Navbar() {
   const supabase = await createClient();
@@ -10,19 +11,27 @@ export async function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link href="/" className="flex items-center space-x-3">
-          <Image
-            src="/djkn.jpeg"
-            alt="Logo DJKN"
-            width={40}
-            height={40}
-            className="rounded-full object-cover"
-            priority
-          />
-          <span className="text-lg font-bold text-djkn-700 hidden sm:inline">
+        {/* Logo sebagai tombol back ke home */}
+        <Link 
+          href="/" 
+          className="flex items-center space-x-3 group cursor-pointer transition-opacity hover:opacity-80"
+          title="Kembali ke Beranda"
+        >
+          <div className="relative">
+            <Image
+              src="/djkn.jpeg"
+              alt="Logo DJKN - Klik untuk kembali ke beranda"
+              width={40}
+              height={40}
+              className="rounded-full object-cover ring-2 ring-djkn-200 group-hover:ring-djkn-400 transition-all"
+              priority
+            />
+          </div>
+          <span className="text-lg font-bold text-djkn-700 hidden sm:inline group-hover:text-djkn-800 transition-colors">
             {SITE_CONFIG.name}
           </span>
         </Link>
+        
         <nav className="flex items-center gap-4 text-sm font-medium">
           <Link href="/pengumuman" className="text-djkn-800 hover:text-djkn-600 transition-colors hidden md:inline">
             Pengumuman
@@ -57,6 +66,3 @@ export async function Navbar() {
     </header>
   );
 }
-
-// Client component untuk logout button
-import { LogoutButton } from "./logout-button";
