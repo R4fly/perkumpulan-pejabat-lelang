@@ -49,23 +49,26 @@ export function AdminDashboardClient({ initialAnnouncements }: AdminDashboardCli
     setDeleteDialog({ isOpen: true, id, title })
   }
 
-  const handleDeleteConfirm = async () => {
-    if (!deleteDialog.id) return
+    const handleDeleteConfirm = async () => {
+    const idToDelete = deleteDialog.id;
+    
+    if (!idToDelete) return;
 
     startTransition(async () => {
       try {
-        await deleteAnnouncement(deleteDialog.id)
-        setAnnouncements((prev) => prev.filter((item) => item.id !== deleteDialog.id))
-        setToast({ message: "Pengumuman berhasil dihapus!", type: "success" })
-        setDeleteDialog({ isOpen: false, id: null, title: "" })
+        // 3. Gunakan variabel lokal yang tipenya sudah dijamin 'string'
+        await deleteAnnouncement(idToDelete);
+        setAnnouncements((prev) => prev.filter((item) => item.id !== idToDelete));
+        setToast({ message: "Pengumuman berhasil dihapus!", type: "success" });
+        setDeleteDialog({ isOpen: false, id: null, title: "" });
       } catch (error) {
         setToast({ 
           message: error instanceof Error ? error.message : "Gagal menghapus pengumuman", 
           type: "error" 
-        })
+        });
       }
-    })
-  }
+    });
+  };
 
   const handleDeleteCancel = () => {
     setDeleteDialog({ isOpen: false, id: null, title: "" })
