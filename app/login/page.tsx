@@ -20,12 +20,11 @@ export default function LoginPage() {
   const router = useRouter();
   const supabase = createClient();
 
-  // Cek apakah user sudah login saat component mount
   useEffect(() => {
     const checkUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
-        // User sudah login, redirect ke dashboard
+        router.refresh();
         router.push("/dashboard");
       } else {
         setIsCheckingAuth(false);
@@ -49,7 +48,7 @@ export default function LoginPage() {
         if (error) throw error;
         
         router.refresh();
-        // Redirect ke dashboard setelah login
+        await new Promise(resolve => setTimeout(resolve, 100));
         router.push("/dashboard");
       } else {
         const { error } = await supabase.auth.signUp({
@@ -60,7 +59,6 @@ export default function LoginPage() {
         setSuccessMessage("Registrasi berhasil! Silakan cek email Anda untuk verifikasi akun. Setelah verifikasi, Anda bisa login.");
         setEmail("");
         setPassword("");
-        // Switch to login mode after 3 seconds
         setTimeout(() => {
           setIsLoginMode(true);
           setSuccessMessage(null);
@@ -68,14 +66,18 @@ export default function LoginPage() {
       }
     } catch (err: unknown) {
       if (err instanceof Error) {
-        if (err.message.includes("Invalid login credentials")) {
+        const errorMessage = err.message || "";
+        
+        if (errorMessage.includes("Invalid login credentials")) {
           setError("Email atau password salah.");
-        } else if (err.message.includes("User already registered")) {
+        } else if (errorMessage.includes("User already registered")) {
           setError("Email ini sudah terdaftar.");
-        } else if (err.message.includes("Email not confirmed")) {
+        } else if (errorMessage.includes("Email not confirmed")) {
           setError("Email belum diverifikasi. Silakan cek inbox Anda.");
+        } else if (errorMessage.includes("rate limit")) {
+          setError("Terlalu banyak percobaan. Silakan tunggu beberapa menit.");
         } else {
-          setError(err.message);
+          setError("Terjadi kesalahan. Silakan coba lagi.");
         }
       } else {
         setError("Terjadi kesalahan yang tidak diketahui.");

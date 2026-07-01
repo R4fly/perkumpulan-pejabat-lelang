@@ -39,7 +39,6 @@ export async function proxy(request: NextRequest) {
       return NextResponse.redirect(url);
     }
 
-    // Cek role admin
     const { data: profile } = await supabase
       .from('profiles')
       .select('role')
