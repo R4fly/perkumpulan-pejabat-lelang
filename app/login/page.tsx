@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,17 +17,7 @@ export default function LoginPage() {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   
   const router = useRouter();
-  const searchParams = useSearchParams();
   const supabase = createClient();
-
-  // Handle redirect setelah login
-  useEffect(() => {
-    const redirect = searchParams.get('redirect');
-    if (redirect) {
-      // Simpan redirect URL untuk digunakan setelah login
-      sessionStorage.setItem('redirect_after_login', redirect);
-    }
-  }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,15 +34,7 @@ export default function LoginPage() {
         if (error) throw error;
         
         router.refresh();
-        
-        // Cek apakah ada redirect URL
-        const redirectUrl = sessionStorage.getItem('redirect_after_login');
-        if (redirectUrl) {
-          sessionStorage.removeItem('redirect_after_login');
-          router.push(redirectUrl);
-        } else {
-          router.push("/");
-        }
+        router.push("/");
       } else {
         const { error } = await supabase.auth.signUp({
           email,
