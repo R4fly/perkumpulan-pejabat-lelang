@@ -1,65 +1,89 @@
-import { Suspense } from "react"
-import { getRegulations } from "@/lib/services/regulations"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { FileText } from "lucide-react"
-import { AnimatedGrid, AnimatedCard } from "@/components/ui/animated-grid"
-import { CardGridSkeleton } from "@/components/ui/card-skeleton"
-import { ErrorBoundary } from "@/components/ui/error-boundary"
-import { ErrorMessage } from "@/components/ui/error-message"
+import { Suspense } from "react";
+import { getRegulations } from "@/lib/services/regulations";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { FileText } from "lucide-react";
+import { AnimatedGrid, AnimatedCard } from "@/components/ui/animated-grid";
+import { CardGridSkeleton } from "@/components/ui/card-skeleton";
+import { ErrorBoundary } from "@/components/ui/error-boundary";
+import { ErrorMessage } from "@/components/ui/error-message";
+import { SearchBar } from "@/components/ui/search-bar";
+import { Pagination } from "@/components/ui/pagination";
 
-async function RegulationsList() {
-  const regulations = await getRegulations()
+interface PeraturanPageProps {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
 
-  if (regulations.length === 0) {
+async function RegulationsList({ searchParams }: PeraturanPageProps) {
+  const params = await searchParams;
+  const page = Number(params.page) || 1;
+  const search = typeof params.search === "string" ? params.search : "";
+
+  const response = await getRegulations({ page, limit: 9, search });
+
+  if (response.data.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-djkn-600">Belum ada peraturan yang diunggah.</p>
+        <p className="text-djkn-600">
+          {search
+            ? `Tidak ada peraturan yang cocok dengan pencarian "${search}".`
+            : "Belum ada peraturan yang diunggah."}
+        </p>
       </div>
-    )
+    );
   }
 
   return (
-    <AnimatedGrid>
-      {regulations.map((item) => (
-        <AnimatedCard key={item.id}>
-          <Card className="flex flex-col hover:shadow-lg transition-shadow border-djkn-100 h-full">
-            <CardHeader>
-              <div className="flex items-center gap-2 mb-2">
-                <Badge className="bg-djkn-100 text-djkn-700 hover:bg-djkn-100 border-0">
-                  {new Date(item.created_at).toLocaleDateString("id-ID", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                  })}
-                </Badge>
-              </div>
-              <CardTitle className="text-xl text-djkn-800">{item.title}</CardTitle>
-            </CardHeader>
-            <CardContent className="flex-grow flex flex-col justify-between">
-              <CardDescription className="text-djkn-600 mb-4">
-                {item.description || "Dokumen peraturan resmi."}
-              </CardDescription>
-              {item.file_url && (
-                <a
-                  href={item.file_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-djkn-700 font-semibold hover:text-djkn-800 transition-colors"
-                >
-                  <FileText className="h-4 w-4" />
-                  Lihat Dokumen
-                </a>
-              )}
-            </CardContent>
-          </Card>
-        </AnimatedCard>
-      ))}
-    </AnimatedGrid>
-  )
+    <>
+      <AnimatedGrid>
+        {response.data.map((item) => (
+          <AnimatedCard key={item.id}>
+            <Card className="flex flex-col hover:shadow-lg transition-shadow border-djkn-100 h-full">
+              <CardHeader>
+                <div className="flex items-center gap-2 mb-2">
+                  <Badge className="bg-djkn-100 text-djkn-700 hover:bg-djkn-100 border-0">
+                    {new Date(item.created_at).toLocaleDateString("id-ID", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}
+                  </Badge>
+                </div>
+                <CardTitle className="text-xl text-djkn-800">{item.title}</CardTitle>
+              </CardHeader>
+              <CardContent className="flex-grow flex flex-col justify-between">
+                <CardDescription className="text-djkn-600 mb-4">
+                  {item.description || "Dokumen peraturan resmi."}
+                </CardDescription>
+                {item.file_url && (
+                  <a
+                    href={item.file_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-djkn-700 font-semibold hover:text-djkn-800 transition-colors"
+                  >
+                    <FileText className="h-4 w-4" />
+                    Lihat Dokumen
+                  </a>
+                )}
+              </CardContent>
+            </Card>
+          </AnimatedCard>
+        ))}
+      </AnimatedGrid>
+
+      <div className="mt-8">
+        <Pagination currentPage={response.page} totalPages={response.totalPages} />
+      </div>
+
+      <div className="mt-4 text-center text-sm text-djkn-600">
+        Menampilkan {response.data.length} dari {response.total} peraturan
+      </div>
+    </>
+  );
 }
 
-export default function PeraturanPage() {
+export default function PeraturanPage({ searchParams }: PeraturanPageProps) {
   return (
     <main className="container mx-auto px-4 py-12">
       <div className="mb-8 text-center">
@@ -67,6 +91,12 @@ export default function PeraturanPage() {
         <p className="mt-2 text-lg text-djkn-600">
           Kumpulan peraturan dan regulasi resmi terkait profesi Pejabat Lelang
         </p>
+      </div>
+
+      <div className="mb-8 flex justify-center">
+        <Suspense>
+          <SearchBar placeholder="Cari peraturan..." />
+        </Suspense>
       </div>
 
       <ErrorBoundary
@@ -77,10 +107,10 @@ export default function PeraturanPage() {
           />
         }
       >
-        <Suspense fallback={<CardGridSkeleton count={6} />}>
-          <RegulationsList />
+        <Suspense fallback={<CardGridSkeleton count={9} />}>
+          <RegulationsList searchParams={searchParams} />
         </Suspense>
       </ErrorBoundary>
     </main>
-  )
+  );
 }
