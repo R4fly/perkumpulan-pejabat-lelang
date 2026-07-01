@@ -25,7 +25,12 @@ function MiniBars() {
   return (
     <div className="mt-6 flex h-36 items-end gap-4 rounded-xl bg-gradient-to-b from-djkn-50 to-white p-4">
       {[18, 48, 72, 96].map((h, i) => (
-        <motion.div key={i} initial={{ height: 0, opacity: 0.6 }} animate={{ height: h }} transition={{ delay: 0.5 + i * 0.15, type: "spring" }} className="w-10 rounded-xl bg-gradient-to-t from-djkn-200 to-djkn-400 shadow-inner" />
+        <motion.div 
+        key={i} 
+        initial={{ height: 0, opacity: 0.6 }} 
+        animate={{ height: h }} 
+        transition={{ delay: 0.5 + i * 0.15, type: "spring" as const }}
+        className="w-10 rounded-xl bg-gradient-to-t from-djkn-200 to-djkn-400 shadow-inner" />
       ))}
     </div>
   );
@@ -33,7 +38,7 @@ function MiniBars() {
 
 function Planet() {
   return (
-    <motion.svg initial={{ rotate: -8 }} animate={{ rotate: 0 }} transition={{ duration: 2, type: "spring" }} width="220" height="220" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <motion.svg initial={{ rotate: -8 }} animate={{ rotate: 0 }} transition={{ duration: 2, type: "spring" as const }} width="220" height="220" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stopColor="#81c784" /> {/* djkn-300 */}
@@ -43,7 +48,7 @@ function Planet() {
       <circle cx="110" cy="110" r="56" fill="url(#grad)" opacity="0.95" />
       <circle cx="94" cy="98" r="10" fill="white" opacity="0.45" />
       <circle cx="132" cy="126" r="8" fill="white" opacity="0.35" />
-      <motion.ellipse cx="110" cy="110" rx="100" ry="34" stroke="white" strokeOpacity="0.6" fill="none" animate={{ strokeDashoffset: [200, 0] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }} strokeDasharray="200 200" />
+      <motion.ellipse cx="110" cy="110" rx="100" ry="34" stroke="white" strokeOpacity="0.6" fill="none" animate={{ strokeDashoffset: [200, 0] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" as const }} strokeDasharray="200 200" />
       <motion.circle cx="210" cy="110" r="4" fill="white" animate={{ opacity: [0.2, 1, 0.2] }} transition={{ duration: 2.2, repeat: Infinity }} />
     </motion.svg>
   );
