@@ -8,6 +8,9 @@ type ThemeProviderProps = {
   children: React.ReactNode;
   defaultTheme?: Theme;
   storageKey?: string;
+  attribute?: string;
+  enableSystem?: boolean;
+  disableTransitionOnChange?: boolean;
 };
 
 type ThemeProviderState = {
@@ -26,15 +29,30 @@ export function ThemeProvider({
   children,
   defaultTheme = "system",
   storageKey = "ppl-theme",
-  ...props
+  attribute = "class",
+  enableSystem = true,
+  disableTransitionOnChange = false,
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(
-    () => (localStorage.getItem(storageKey) as Theme) || defaultTheme
+    () => (typeof window !== "undefined" && localStorage.getItem(storageKey) as Theme) || defaultTheme
   );
 
   useEffect(() => {
     const root = window.document.documentElement;
+    
+    // Hapus semua class theme
     root.classList.remove("light", "dark");
+
+    // Tambahkan transition disable jika diminta
+    if (disableTransitionOnChange) {
+      const css = document.createElement("style");
+      css.appendChild(
+        document.createTextNode(
+          `*,*::before,*::after{-o-transition:none!important;-moz-transition:none!important;-ms-transition:none!important;-webkit-transition:none!important;transition:none!important}`
+        )
+      );
+      document.head.appendChild(css);
+    }
 
     if (theme === "system") {
       const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
@@ -42,12 +60,53 @@ export function ThemeProvider({
         ? "dark"
         : "light";
 
-      root.classList.add(systemTheme);
-      return;
+      if (attribute === "class") {
+        root.classList.add(systemTheme);
+      } else {
+        root.setAttribute(attribute, systemTheme);
+      }
+    } else {
+      if (attribute === "class") {
+        root.classList.add(theme);
+      } else {
+        root.setAttribute(attribute, theme);
+      }
     }
 
-    root.classList.add(theme);
-  }, [theme]);
+    // Hapus transition disable setelah theme diterapkan
+    if (disableTransitionOnChange) {
+      setTimeout(() => {
+        const css = document.head.querySelector("style");
+        if (css) {
+          document.head.removeChild(css);
+        }
+      }, 1);
+    }
+  }, [theme, attribute, disableTransitionOnChange]);
+
+  // Listen untuk perubahan system theme
+  useEffect(() => {
+    if (!enableSystem) return;
+
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    
+    const handleChange = () => {
+      if (theme === "system") {
+        const root = window.document.documentElement;
+        root.classList.remove("light", "dark");
+        const systemTheme = mediaQuery.matches ? "dark" : "light";
+        
+        if (attribute === "class") {
+          root.classList.add(systemTheme);
+        } else {
+          root.setAttribute(attribute, systemTheme);
+        }
+      }
+    };
+
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, [theme, attribute, enableSystem]);
 
   const value = {
     theme,
@@ -58,7 +117,7 @@ export function ThemeProvider({
   };
 
   return (
-    <ThemeProviderContext.Provider {...props} value={value}>
+    <ThemeProviderContext.Provider value={value}>
       {children}
     </ThemeProviderContext.Provider>
   );
