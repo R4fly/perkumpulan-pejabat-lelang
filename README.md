@@ -137,6 +137,17 @@
 - **Type Checking:** TypeScript strict mode
 - **Deployment:** [Vercel](https://vercel.com/)
 
+### Email & Notifications
+- **Resend** - Modern email delivery service
+- **React Email** - Email template builder dengan React
+
+### Rich Text
+- **Tiptap** - Headless WYSIWYG editor
+- **ProseMirror** - Underlying editor framework
+
+### Storage
+- **Supabase Storage** - File upload & image hosting
+
 ---
 
 ## 📋 Prerequisites
@@ -176,18 +187,28 @@ cp .env.example .env.local
 Isi variabel berikut:
 
 ```env
-# Supabase Configuration
-NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
+# Resend Configuration (BARU)
+RESEND_API_KEY=re_xxxxxxxx
+RESEND_FROM_EMAIL=noreply@your-domain.com
 
-# Admin Configuration
-ADMIN_EMAIL=admin@ppl-indonesia.org
+# Site URL (BARU - untuk email links)
+NEXT_PUBLIC_SITE_URL=https://your-project.vercel.app
 ```
 
 > **Cara mendapatkan Supabase credentials:**
 > 1. Buat proyek baru di [Supabase Dashboard](https://supabase.com/dashboard/)
 > 2. Buka **Settings** → **API**
 > 3. Copy **Project URL** dan **anon/public key**
+
+> **Cara mendapatkan Resend API Key:**
+> 1. Buka [https://resend.com](https://resend.com)
+> 2. Login → **API Keys** → **Create API Key**
+> 3. Copy key (format: `re_xxxxxxxx`)
+
+> **Catatan:**
+> Ganti `noreply@your-domain.com` dengan domain Anda
+> Untuk testing, bisa pakai `noreply@resend.dev` (Resend provide free test domain)
+> `NEXT_PUBLIC_SITE_URL` harus match dengan domain Vercel Anda
 
 ### 4. Setup Database
 
@@ -335,6 +356,16 @@ Buka [http://localhost:3000](http://localhost:3000) di browser Anda.
 2. **Akses Admin Panel** - Klik "Admin Panel" di dashboard
 3. **Kelola Konten** - Tambah, edit, atau hapus pengumuman/peraturan
 4. **Monitor** - Lihat daftar semua konten yang telah diunggah
+
+---
+
+### 📎 Advanced Features
+- **File Upload** - Upload gambar langsung ke Supabase Storage dengan drag & drop
+- **Rich Text Editor** - Editor WYSIWYG Tiptap dengan formatting lengkap (bold, italic, headings, lists, links, images)
+- **Email Notifications** - Welcome email & announcement notifications via Resend
+- **Subscription Management** - User bisa subscribe/unsubscribe dari notifikasi email
+- **Social Sharing** - Share ke 7 platform (WhatsApp, Facebook, Twitter/X, LinkedIn, Telegram, Email, Copy Link)
+- **Unsubscribe System** - Token-based unsubscribe dengan halaman konfirmasi
 
 ---
 
