@@ -46,6 +46,7 @@ const ADMIN_MENU: MenuItem[] = [
   { icon: Megaphone, title: "Kelola Pengumuman", href: "/admin/pengumuman" },
   { icon: FileText, title: "Kelola Peraturan", href: "/admin/peraturan" },
   { icon: Users, title: "Kelola Anggota", href: "/admin/anggota" },
+  { icon: Shield, title: "Kelola Admin", href: "/admin/manage-admins" },
   { icon: BarChart3, title: "Laporan", href: "/admin/laporan" },
   { icon: Settings, title: "Pengaturan", href: "/admin/pengaturan" },
 ];
