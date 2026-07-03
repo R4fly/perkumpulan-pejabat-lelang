@@ -1,6 +1,6 @@
 import * as React from "react";
 import type { Metadata } from "next";
-import FinTechLandingPage from "@/components/ui/fin-tech-landing-page";
+import GlassmorphismHero from "@/components/ui/glassmorphism-hero";
 import { AnnouncementPreview } from "@/components/landing/AnnouncementPreview";
 import { CallToAction } from "@/components/landing/CallToAction";
 import { listAnnouncements } from "@/lib/data";
@@ -21,7 +21,7 @@ export default async function HomePage(): Promise<React.JSX.Element> {
 
   return (
     <>
-      <FinTechLandingPage />
+      <GlassmorphismHero />
       <AnnouncementPreview items={announcements} />
       <CallToAction
         title="Bergabung bersama PPL"
