@@ -150,3 +150,103 @@
     @apply font-sans;
   }
 }
+
+/* Tiptap Editor Styles */
+.tiptap {
+  min-height: 200px;
+  padding: 1rem;
+}
+
+.tiptap p {
+  margin-bottom: 0.75rem;
+}
+
+.tiptap h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: var(--djkn-800);
+}
+
+.tiptap h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.75rem;
+  color: var(--djkn-800);
+}
+
+.tiptap h3 {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: var(--djkn-800);
+}
+
+.tiptap ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.tiptap ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.tiptap li {
+  margin-bottom: 0.25rem;
+}
+
+.tiptap blockquote {
+  border-left: 4px solid var(--djkn-300);
+  padding-left: 1rem;
+  margin-left: 0;
+  margin-bottom: 0.75rem;
+  font-style: italic;
+  color: var(--djkn-700);
+}
+
+.tiptap code {
+  background-color: var(--djkn-100);
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+}
+
+.tiptap pre {
+  background-color: var(--djkn-800);
+  color: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 0.75rem;
+}
+
+.tiptap pre code {
+  background-color: transparent;
+  padding: 0;
+  color: inherit;
+}
+
+.tiptap img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+}
+
+.tiptap a {
+  color: var(--djkn-700);
+  text-decoration: underline;
+}
+
+.tiptap a:hover {
+  color: var(--djkn-800);
+}
+
+.tiptap hr {
+  border: none;
+  border-top: 2px solid var(--djkn-200);
+  margin: 1.5rem 0;
+}

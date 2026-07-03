@@ -63,9 +63,12 @@ async function AnnouncementsList({ searchParams }: PengumumanPageProps) {
                 </CardTitle>
               </CardHeader>
               <CardContent className="flex-grow">
-                <CardDescription className="text-djkn-600">
-                  {item.description || "Tidak ada deskripsi tersedia."}
-                </CardDescription>
+                <CardDescription 
+                  className="text-djkn-600 prose prose-sm max-w-none"
+                  dangerouslySetInnerHTML={{ 
+                    __html: item.description || "Tidak ada deskripsi tersedia." 
+                  }}
+                />
               </CardContent>
             </Card>
           </AnimatedCard>

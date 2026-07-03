@@ -19,13 +19,17 @@ export function validateAnnouncementForm(formData: FormData): ValidationResult {
     errors.title = "Judul maksimal 200 karakter";
   }
 
-  // Validasi deskripsi
+  // Update validasi description untuk menerima HTML
   if (!description || description.trim().length === 0) {
     errors.description = "Deskripsi wajib diisi";
-  } else if (description.trim().length < 10) {
-    errors.description = "Deskripsi minimal 10 karakter";
-  } else if (description.trim().length > 1000) {
-    errors.description = "Deskripsi maksimal 1000 karakter";
+  } else {
+    // Strip HTML tags untuk validasi length
+    const textContent = description.replace(/<[^>]*>/g, "").trim();
+    if (textContent.length < 10) {
+      errors.description = "Deskripsi minimal 10 karakter";
+    } else if (textContent.length > 5000) {
+      errors.description = "Deskripsi maksimal 5000 karakter";
+    }
   }
 
   // Validasi URL gambar (opsional)
