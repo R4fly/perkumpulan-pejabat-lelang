@@ -11,11 +11,9 @@ import {
   FileText, 
   Megaphone, 
   Shield,
-  ArrowRight,
-  LogOut 
+  ArrowRight
 } from "lucide-react";
 import Link from "next/link";
-import { LogoutButton } from "@/components/layout/logout-button";
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -46,17 +44,12 @@ export default async function DashboardPage() {
     <main className="container mx-auto px-4 py-12">
       {/* Welcome Section */}
       <div className="mb-8">
-        <div className="flex items-start justify-between flex-wrap gap-4">
-          <div>
-            <h1 className="text-3xl md:text-4xl font-bold text-djkn-800">
-              Selamat Datang, {user.email?.split("@")[0]}! 👋
-            </h1>
-            <p className="text-djkn-600 mt-2">
-              Kelola akun dan akses informasi terbaru dari Perkumpulan Pejabat Lelang.
-            </p>
-          </div>
-          <LogoutButton />
-        </div>
+        <h1 className="text-3xl md:text-4xl font-bold text-djkn-800">
+          Selamat Datang, {user.email?.split("@")[0]}! 👋
+        </h1>
+        <p className="text-djkn-600 mt-2">
+          Kelola akun dan akses informasi terbaru dari Perkumpulan Pejabat Lelang.
+        </p>
       </div>
 
       {/* User Info Card */}
@@ -161,33 +154,6 @@ export default async function DashboardPage() {
           </CardContent>
         </Card>
       </div>
-
-      {/* Admin-only Section */}
-      {profile?.role === "admin" && (
-        <Card className="border-djkn-200 bg-gradient-to-br from-djkn-50 to-white">
-          <CardHeader>
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-djkn-700 rounded-lg">
-                <Shield className="h-5 w-5 text-white" />
-              </div>
-              <div>
-                <CardTitle className="text-xl text-djkn-800">Akses Administrator</CardTitle>
-                <CardDescription>
-                  Anda memiliki hak akses penuh untuk mengelola konten website.
-                </CardDescription>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <Button asChild className="bg-djkn-700 hover:bg-djkn-800">
-              <Link href="/admin">
-                Buka Admin Dashboard
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-          </CardContent>
-        </Card>
-      )}
     </main>
   );
 }
