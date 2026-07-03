@@ -6,6 +6,7 @@ import { DashboardHeader } from "@/components/layout/dashboard-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { User, Mail, Calendar, Shield } from "lucide-react";
+import { SubscriptionManager } from "@/components/dashboard/subscription-manager";  
 
 export default async function ProfilPage() {
   const supabase = await createClient();
@@ -92,6 +93,16 @@ export default async function ProfilPage() {
                   </Badge>
                 </div>
               </div>
+            </CardContent>
+          </Card>
+          <Card className="shadow-sm mt-6">
+            <CardHeader>
+              <CardTitle className="text-xl font-semibold text-djkn-900">
+                Preferensi Notifikasi
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <SubscriptionManager />
             </CardContent>
           </Card>
         </div>

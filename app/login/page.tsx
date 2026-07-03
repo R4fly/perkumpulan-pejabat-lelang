@@ -56,7 +56,13 @@ export default function LoginPage() {
           password,
         });
         if (error) throw error;
-        setSuccessMessage("Registrasi berhasil! Silakan cek email Anda untuk verifikasi akun. Setelah verifikasi, Anda bisa login.");
+        
+        // Kirim welcome email (async, tidak block response)
+        fetch("/api/welcome", { method: "POST" }).catch((err) => {
+          console.error("Error sending welcome email:", err);
+        });
+        
+        setSuccessMessage("Registrasi berhasil! Silakan cek email Anda untuk verifikasi akun.");
         setEmail("");
         setPassword("");
         setTimeout(() => {

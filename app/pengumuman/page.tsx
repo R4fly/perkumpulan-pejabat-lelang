@@ -9,6 +9,7 @@ import { ErrorBoundary } from "@/components/ui/error-boundary";
 import { ErrorMessage } from "@/components/ui/error-message";
 import { SearchBar } from "@/components/ui/search-bar";
 import { Pagination } from "@/components/ui/pagination";
+import { ShareButtons } from "@/components/ui/share-buttons";
 
 interface PengumumanPageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -70,6 +71,16 @@ async function AnnouncementsList({ searchParams }: PengumumanPageProps) {
                   }}
                 />
               </CardContent>
+              <div className="flex items-center justify-between border-t border-djkn-100 px-6 py-3 bg-djkn-50/50">
+                <div className="text-xs text-djkn-500">
+                  Bagikan pengumuman ini:
+                </div>
+                <ShareButtons
+                  title={item.title}
+                  url={`${typeof window !== 'undefined' ? window.location.origin : ''}/pengumuman?id=${item.id}`}
+                  description={item.description?.replace(/<[^>]*>/g, "").substring(0, 200) || ""}
+                />
+              </div>
             </Card>
           </AnimatedCard>
         ))}

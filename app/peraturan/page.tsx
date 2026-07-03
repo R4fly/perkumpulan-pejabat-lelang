@@ -9,6 +9,7 @@ import { ErrorBoundary } from "@/components/ui/error-boundary";
 import { ErrorMessage } from "@/components/ui/error-message";
 import { SearchBar } from "@/components/ui/search-bar";
 import { Pagination } from "@/components/ui/pagination";
+import { ShareButtons } from "@/components/ui/share-buttons";
 
 interface PeraturanPageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -67,6 +68,16 @@ async function RegulationsList({ searchParams }: PeraturanPageProps) {
                   </a>
                 )}
               </CardContent>
+              <div className="flex items-center justify-between border-t border-djkn-100 px-6 py-3 bg-djkn-50/50">
+                <div className="text-xs text-djkn-500">
+                  Bagikan peraturan ini:
+                </div>
+                <ShareButtons
+                  title={item.title}
+                  url={`${typeof window !== 'undefined' ? window.location.origin : ''}/peraturan?id=${item.id}`}
+                  description={item.description || ""}
+                />
+              </div>
             </Card>
           </AnimatedCard>
         ))}
