@@ -1,5 +1,7 @@
 "use client";
 
+import { FileUpload } from "@/components/ui/file-upload";
+import { uploadImage } from "@/lib/services/upload";
 import { useState, useTransition } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -15,6 +17,9 @@ interface AdminDashboardClientProps {
 }
 
 export function AdminDashboardClient({ initialAnnouncements }: AdminDashboardClientProps) {
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [preview, setPreview] = useState<string | null>(null);
   const [announcements, setAnnouncements] = useState(initialAnnouncements);
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" | "info" } | null>(null);
   const [deleteDialog, setDeleteDialog] = useState<{ isOpen: boolean; id: string | null; title: string }>({
@@ -29,6 +34,58 @@ export function AdminDashboardClient({ initialAnnouncements }: AdminDashboardCli
     description: "",
     image_url: "",
   });
+
+  const handleCreate = async (formData: FormData) => {
+    startTransition(async () => {
+      try {
+        let imageUrl = formData.get("image_url") as string;
+
+        // Upload file jika ada
+        if (selectedFile) {
+          setUploading(true);
+          const uploadFormData = new FormData();
+          uploadFormData.append("file", selectedFile);
+
+          const uploadResult = await uploadImage(uploadFormData, "announcements");
+
+          if (uploadResult.success && uploadResult.url) {
+            imageUrl = uploadResult.url;
+          } else {
+            setToast({ 
+              message: uploadResult.error || "Gagal upload gambar", 
+              type: "error" 
+            });
+            setUploading(false);
+            return;
+          }
+          setUploading(false);
+        }
+
+        // Update formData dengan image URL
+        formData.set("image_url", imageUrl);
+
+        await createAnnouncement(formData);
+        setToast({ message: "Pengumuman berhasil ditambahkan!", type: "success" });
+
+        // Reset form
+        setFormData({ title: "", description: "", image_url: "" });
+        setSelectedFile(null);
+        setPreview(null);
+
+        // Refresh data
+        const response = await fetch("/api/announcements");
+        if (response.ok) {
+          const data = await response.json();
+          setAnnouncements(data);
+        }
+      } catch (error) {
+        setToast({ 
+          message: error instanceof Error ? error.message : "Gagal menambahkan pengumuman", 
+          type: "error" 
+        });
+      }
+    });
+  };
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -130,50 +187,72 @@ export function AdminDashboardClient({ initialAnnouncements }: AdminDashboardCli
 
       <div className="grid md:grid-cols-2 gap-8">
         <Card>
-          <CardHeader>
-            <CardTitle>Tambah Pengumuman</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <FormField
-                id="title"
-                label="Judul"
-                placeholder="Masukkan judul pengumuman"
-                required
-                error={formErrors.title}
-                disabled={isPending}
-                value={formData.title}
-                onChange={(e) => handleInputChange("title", e.target.value)}
+        <CardHeader>
+          <CardTitle>Tambah Pengumuman</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <FormField
+              id="title"
+              label="Judul"
+              placeholder="Masukkan judul pengumuman"
+              required
+              error={formErrors.title}
+              disabled={isPending}
+              value={formData.title}
+              onChange={(e) => handleInputChange("title", e.target.value)}
+            />
+            <FormField
+              id="description"
+              label="Deskripsi"
+              placeholder="Masukkan deskripsi pengumuman"
+              required
+              error={formErrors.description}
+              disabled={isPending}
+              value={formData.description}
+              onChange={(e) => handleInputChange("description", e.target.value)}
+            />
+            
+            {/* File Upload Component */}
+            <div className="space-y-2">
+              <Label className="text-djkn-700 font-medium">
+                Gambar (Opsional)
+              </Label>
+              <FileUpload
+                onFileSelect={(file) => {
+                  setSelectedFile(file);
+                  setPreview(URL.createObjectURL(file));
+                }}
+                onClear={() => {
+                  setSelectedFile(null);
+                  setPreview(null);
+                }}
+                preview={preview}
+                disabled={isPending || uploading}
               />
-              <FormField
-                id="description"
-                label="Deskripsi"
-                placeholder="Masukkan deskripsi pengumuman"
-                required
-                error={formErrors.description}
-                disabled={isPending}
-                value={formData.description}
-                onChange={(e) => handleInputChange("description", e.target.value)}
-              />
-              <FormField
-                id="image_url"
-                label="URL Gambar (Opsional)"
-                placeholder="https://example.com/image.jpg"
-                error={formErrors.image_url}
-                disabled={isPending}
-                value={formData.image_url}
-                onChange={(e) => handleInputChange("image_url", e.target.value)}
-              />
-              <Button
-                type="submit"
-                className="w-full bg-djkn-700 hover:bg-djkn-800"
-                disabled={isPending}
-              >
-                {isPending ? "Menyimpan..." : "Simpan"}
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
+            </div>
+            
+            {/* Atau input URL manual */}
+            <FormField
+              id="image_url"
+              label="Atau URL Gambar (Opsional)"
+              placeholder="https://example.com/image.jpg"
+              error={formErrors.image_url}
+              disabled={isPending || !!selectedFile}
+              value={formData.image_url}
+              onChange={(e) => handleInputChange("image_url", e.target.value)}
+            />
+            
+            <Button
+              type="submit"
+              className="w-full bg-djkn-700 hover:bg-djkn-800"
+              disabled={isPending || uploading}
+            >
+              {uploading ? "Mengupload gambar..." : isPending ? "Menyimpan..." : "Simpan"}
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
 
         <Card>
           <CardHeader>
