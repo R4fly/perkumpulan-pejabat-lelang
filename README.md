@@ -22,7 +22,6 @@
 
   <br />
 
-  <!-- Tech Stack Badges -->
   [![Next.js](https://img.shields.io/badge/Next.js-16.2.9-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
   [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
   [![Supabase](https://img.shields.io/badge/Supabase-Database-3ECF8E?style=for-the-badge&logo=supabase)](https://supabase.com/)
@@ -32,7 +31,6 @@
 
   <br />
 
-  <!-- Project Status Badges -->
   [![License](https://img.shields.io/badge/License-Proprietary-red?style=for-the-badge)]()
   [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=for-the-badge)]()
 
@@ -48,19 +46,19 @@
       <td align="center">
         <img src="public/ss1.png" alt="Landing Page" width="100%" />
         <br />
-        <em>Landing Page</em>
+        <em>Landing Page - Glassmorphism Hero</em>
       </td>
       <td align="center">
         <img src="public/ss2.png" alt="Dashboard" width="100%" />
         <br />
-        <em>User Dashboard</em>
+        <em>User Dashboard dengan Collapsible Sidebar</em>
       </td>
     </tr>
     <tr>
       <td align="center">
         <img src="public/ss3.png" alt="Pengumuman" width="100%" />
         <br />
-        <em>Halaman Pengumuman</em>
+        <em>Halaman Pengumuman dengan Search & Pagination</em>
       </td>
       <td align="center">
         <img src="public/ss4.png" alt="Admin Panel" width="100%" />
@@ -70,40 +68,49 @@
     </tr>
   </table>
 </div>
+
 ---
 
 ## ✨ Fitur
 
 ### 🌐 Public Features
-- **Landing Page Modern** - Hero section dengan animasi premium menggunakan Framer Motion
+- **Landing Page Modern** - Hero section dengan desain glassmorphism light theme
 - **Pengumuman & Peraturan** - Card grid dengan search dan pagination
 - **Tentang Kami** - Informasi lengkap organisasi dengan Bento Grid layout
 - **Responsive Design** - Optimal di semua ukuran layar (mobile-first)
 - **SEO Optimized** - Metadata lengkap dan semantic HTML
+- **Smooth Animations** - Framer Motion untuk entrance animations
 
 ### 🔐 Authentication & Authorization
 - **Supabase Auth** - Sistem autentikasi yang aman dan scalable
 - **Role-Based Access Control** - Pemisahan hak akses antara user dan admin
-- **Protected Routes** - Middleware-based route protection
+- **Protected Routes** - Proxy middleware-based route protection
 - **Email Verification** - Verifikasi email otomatis saat registrasi
+- **Secure Logout** - Server-side logout dengan session clearing
 
 ### 👤 User Dashboard
-- **Profil Akun** - Informasi user dan status keanggotaan
-- **Quick Access** - Akses cepat ke fitur utama
-- **Recent Announcements** - Pengumuman terbaru di dashboard
-- **Logout Secure** - Server-side logout dengan session clearing
+- **Collapsible Sidebar** - Menu navigasi yang bisa di-hide/show
+- **Realtime Stats** - Total pengumuman, peraturan, hari bergabung (realtime)
+- **Recent Activity** - Pengumuman terbaru di dashboard
+- **Quick Access** - Shortcut ke fitur utama
+- **Profil Akun** - Halaman profil dengan informasi lengkap
+- **Pengaturan** - Placeholder untuk fitur pengaturan akun
 
 ### 🛠️ Admin Dashboard
-- **CRUD Operations** - Kelola pengumuman dan peraturan dengan mudah
+- **Collapsible Sidebar** - Menu admin terpisah dari user
+- **Overview Stats** - Total pengumuman, peraturan, anggota, views
+- **Kelola Konten** - CRUD pengumuman dan peraturan
 - **Form Validation** - Validasi client-side yang robust
 - **Confirmation Dialog** - Mencegah accidental delete
 - **Toast Notifications** - Feedback visual untuk semua operasi
 - **Real-time Updates** - Data refresh tanpa reload halaman
 
 ### 🎨 UI/UX Excellence
+- **Glassmorphism Hero** - Desain modern dengan backdrop blur
 - **Loading States** - Skeleton loading untuk semua halaman dinamis
 - **Error Boundaries** - Graceful error handling dengan retry mechanism
-- **Smooth Animations** - Staggered entrance animations
+- **Toast Notifications** - Feedback visual untuk semua operasi
+- **Confirmation Dialog** - Mencegah accidental delete
 - **Professional Design** - Palet warna DJKN yang konsisten
 
 ---
@@ -153,16 +160,21 @@ cd perkumpulan-pejabat-lelang
 ```
 
 ### 2. Install Dependencies
+
 ```bash
 npm install
 ```
 
 ### 3. Setup Environment Variables
+
+Buat file `.env.local` di root proyek:
+
 ```bash
 cp .env.example .env.local
 ```
 
 Isi variabel berikut:
+
 ```env
 # Supabase Configuration
 NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
@@ -172,13 +184,15 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
 ADMIN_EMAIL=admin@ppl-indonesia.org
 ```
 
-**Cara mendapatkan Supabase credentials:**
-1. Buat proyek baru di [Supabase Dashboard](https://supabase.com)
-2. Buka **Settings → API**
-3. Copy **Project URL** dan **anon/public key**
+> **Cara mendapatkan Supabase credentials:**
+> 1. Buat proyek baru di [Supabase Dashboard](https://supabase.com/dashboard/)
+> 2. Buka **Settings** → **API**
+> 3. Copy **Project URL** dan **anon/public key**
 
 ### 4. Setup Database
+
 Buka **SQL Editor** di Supabase Dashboard dan jalankan script berikut:
+
 ```sql
 -- 1. Buat tabel announcements
 create table announcements (
@@ -286,7 +300,9 @@ grant execute on function public.is_admin(uuid) to authenticated;
 ```
 
 ### 5. Set Admin Role
+
 Setelah mendaftar melalui website, jalankan SQL ini untuk set role admin:
+
 ```sql
 UPDATE public.profiles
 SET role = 'admin'
@@ -294,46 +310,55 @@ WHERE email = 'email-admin-anda@email.com';
 ```
 
 ### 6. Jalankan Development Server
+
 ```bash
 npm run dev
 ```
 
-Buka http://localhost:3000 di browser Anda.
+Buka [http://localhost:3000](http://localhost:3000) di browser Anda.
 
 ---
 
-### 📖 Usage
-**Untuk User Biasa**
-1. **Registrasi** - Buka /login dan klik "Daftar di sini"
-2. **Verifikasi** Email - Cek inbox dan klik link verifikasi
+## 📖 Usage
+
+### Untuk User Biasa
+
+1. **Registrasi** - Buka `/login` dan klik "Daftar di sini"
+2. **Verifikasi Email** - Cek inbox dan klik link verifikasi
 3. **Login** - Masuk dengan email dan password
-4. **Dashboard** - Akses /dashboard untuk melihat info akun
+4. **Dashboard** - Akses `/dashboard` untuk melihat info akun
 5. **Browse Content** - Jelajahi pengumuman dan peraturan
 
-**Untuk Admin**
+### Untuk Admin
+
 1. **Login sebagai Admin** - Gunakan akun yang sudah di-set role admin
 2. **Akses Admin Panel** - Klik "Admin Panel" di dashboard
 3. **Kelola Konten** - Tambah, edit, atau hapus pengumuman/peraturan
 4. **Monitor** - Lihat daftar semua konten yang telah diunggah
+
 ---
 
-### Project Structure
+## 🏗️ Project Structure
+
 ```
 perkumpulan-pejabat-lelang/
 ├── app/
-│   ├── admin/              # Admin dashboard
+│   ├── admin/              # Admin dashboard dengan sidebar
 │   ├── api/                # API routes
-│   ├── dashboard/          # User dashboard
+│   ├── dashboard/          # User dashboard dengan sidebar
+│   │   ├── profil/         # Halaman profil user
+│   │   └── pengaturan/     # Halaman pengaturan user
 │   ├── login/              # Login/Register page
-│   ├── pengumuman/         # Announcements page
-│   ├── peraturan/          # Regulations page
-│   ├── tentang/            # About page
+│   ├── pengumuman/         # Announcements page dengan search & pagination
+│   ├── peraturan/          # Regulations page dengan search & pagination
+│   ├── tentang/            # About page dengan bento grid
 │   ├── layout.tsx          # Root layout
-│   ├── page.tsx            # Landing page
+│   ├── page.tsx            # Landing page dengan glassmorphism hero
 │   └── globals.css         # Global styles
 ├── components/
-│   ├── layout/             # Layout components (Navbar, Footer)
+│   ├── layout/             # Layout components (Navbar, Footer, Sidebar)
 │   ├── landing/            # Landing page sections
+│   ├── dashboard/          # Dashboard components (StatsCard, JoinDuration)
 │   └── ui/                 # shadcn/ui components
 ├── lib/
 │   ├── services/           # Data fetching services
@@ -341,17 +366,21 @@ perkumpulan-pejabat-lelang/
 │   ├── auth.ts             # Auth utilities
 │   ├── validation.ts       # Form validation
 │   └── utils.ts            # Helper functions
-├── public/                 # Static assets
-├── proxy.ts                # Middleware for route protection
+├── public/                 # Static assets (djkn.jpeg, background.jpeg)
+├── proxy.ts                # Proxy middleware for route protection
 ├── next.config.ts          # Next.js configuration
 ├── tailwind.config.ts      # Tailwind configuration
 └── package.json            # Dependencies
 ```
+
 ---
 
-### 🌐 Deployment
+## 🌐 Deployment
+
 ### Deploy ke Vercel (Recommended)
-Cara termudah untuk deploy adalah [menggunakan Vercel Platform](https://vercel.com):
+
+Cara termudah untuk deploy adalah menggunakan [Vercel Platform](https://vercel.com):
+
 1. **Push ke Github**
 ```bash
 git add .
@@ -376,48 +405,57 @@ ADMIN_EMAIL=admin@ppl-indonesia.org
 4. **Deploy**
 - Klik **"Deploy"**
 - Tunggu proses deployment selesai
-- Website Anda akan live di https://your-project.vercel.app
+- Website Anda akan live di `https://your-project.vercel.app`
 
 5. **Alternative: Deploy Manual**
 ```bash
 npm run build
 npm run start
 ```
----
-
-### 🧪 Testing
-**Manual Testing Checklist**
-- Landing page loads correctly
-- Navigation links work
-- User registration flow
-- Email verification
-- User login/logout
-- Dashboard access
-- Admin panel access
-- Create announcement
-- Delete announcement
-- Search functionality
-- Pagination
-- Responsive design (mobile/tablet/desktop)
 
 ---
 
-### 🤝 Contributing
+## 🧪 Testing
+
+### Manual Testing Checklist
+
+- [ ] Landing page loads correctly dengan glassmorphism hero
+- [ ] Navigation links work
+- [ ] User registration flow
+- [ ] Email verification
+- [ ] User login/logout
+- [ ] Dashboard access dengan collapsible sidebar
+- [ ] Admin panel access
+- [ ] Create announcement
+- [ ] Delete announcement dengan confirmation
+- [ ] Search functionality
+- [ ] Pagination
+- [ ] Responsive design (mobile/tablet/desktop)
+- [ ] Realtime join duration di dashboard
+- [ ] Sidebar tidak tembus navbar
+
+---
+
+## 🤝 Contributing
+
 Contributions, issues, dan feature requests sangat diterima!
+
 1. Fork repository ini
-2. Buat branch fitur baru (```git checkout -b feature/AmazingFeature```)
-3. Commit perubahan (```git commit -m 'Add some AmazingFeature'```)
-4. Push ke branch (```git push origin feature/AmazingFeature```)
+2. Buat branch fitur baru (`git checkout -b feature/AmazingFeature`)
+3. Commit perubahan (`git commit -m 'Add some AmazingFeature'`)
+4. Push ke branch (`git push origin feature/AmazingFeature`)
 5. Buka Pull Request
 
 ---
 
-### 📝 License
+## 📝 License
+
 Proyek ini dibuat untuk **Perkumpulan Pejabat Lelang (PPL)** dan bersifat proprietary.
 
 ---
 
-### 🙏 Acknowledgments
+## 🙏 Acknowledgments
+
 - [Next.js](https://nextjs.org) - Framework React terbaik
 - [Supabase](https://supabase.com) - Backend-as-a-Service open source
 - [shadcn/ui](https://ui.shadcn.com) - Komponen UI yang beautiful
@@ -428,23 +466,28 @@ Proyek ini dibuat untuk **Perkumpulan Pejabat Lelang (PPL)** dan bersifat propri
 
 ---
 
-📞 Contact
-- Perkumpulan Pejabat Lelang (PPL)
-- Instagram: @pejabatlelang.id
-- Website: [www.ppl-indonesia.org](www.ppl-indonesia.org)
+## 📞 Contact
+
+- **Perkumpulan Pejabat Lelang (PPL)**
+- Instagram: [@pejabatlelang.id](https://www.instagram.com/pejabatlelang.id/)
+- Website: [www.ppl-indonesia.org](https://www.ppl-indonesia.org)
 
 ---
 
-### 📊 Project Status
+## 📊 Project Status
+
 ✅ **Version 1.0.0** - Production Ready
-- ✅ Authentication & Authorization
-- ✅ User Dashboard
-- ✅ Admin Dashboard
-- ✅ CRUD Operations
+
+- ✅ Authentication & Authorization dengan RBAC
+- ✅ User Dashboard dengan Collapsible Sidebar
+- ✅ Admin Dashboard dengan Collapsible Sidebar
+- ✅ CRUD Operations untuk Pengumuman & Peraturan
 - ✅ Search & Pagination
+- ✅ Glassmorphism Hero Section
+- ✅ Realtime Join Duration
 - ✅ Responsive Design
 - ✅ SEO Optimized
-- ✅ Deployed to Vercel
+- ✅ Ready to Deploy to Vercel
 
 ---
 

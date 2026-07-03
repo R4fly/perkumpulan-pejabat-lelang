@@ -4,19 +4,19 @@ import { getUserProfile } from "@/lib/auth";
 import { Sidebar } from "@/components/layout/sidebar";
 import { DashboardHeader } from "@/components/layout/dashboard-header";
 import { StatsCard } from "@/components/dashboard/stats-card";
+import { JoinDuration } from "@/components/dashboard/join-duration";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { 
   Megaphone, 
   FileText, 
-  Calendar,
   Activity,
   ArrowRight,
   TrendingUp,
 } from "lucide-react";
 import Link from "next/link";
-import { getAnnouncements, getAnnouncementCount } from "@/lib/services/announcements";
-import { getRegulations, getRegulationCount } from "@/lib/services/regulations";
+import { getAnnouncementCount } from "@/lib/services/announcements";
+import { getRegulationCount } from "@/lib/services/regulations";
 
 export default async function UserDashboardPage() {
   const supabase = await createClient();
@@ -40,14 +40,6 @@ export default async function UserDashboardPage() {
     .select("*")
     .order("created_at", { ascending: false })
     .limit(5);
-
-  // Calculate days since join
-  const joinDate = user.created_at 
-    ? new Date(user.created_at)
-    : new Date();
-  const daysSinceJoin = Math.floor(
-    (new Date().getTime() - joinDate.getTime()) / (1000 * 60 * 60 * 24)
-  );
 
   return (
     <div className="flex min-h-screen w-full bg-djkn-50">
@@ -83,15 +75,8 @@ export default async function UserDashboardPage() {
             trend="Dokumen resmi"
             trendColor="neutral"
           />
-          <StatsCard
-            icon={Calendar}
-            iconColor="text-purple-600"
-            iconBg="bg-purple-100"
-            title="Hari Bergabung"
-            value={daysSinceJoin}
-            trend="Bergabung sejak 2024"
-            trendColor="neutral"
-          />
+          {/* Ganti StatsCard "Hari Bergabung" dengan JoinDuration */}
+          <JoinDuration joinDate={user.created_at || new Date().toISOString()} />
           <StatsCard
             icon={Activity}
             iconColor="text-orange-600"

@@ -68,10 +68,9 @@ export function Sidebar({ variant, userEmail, userRole }: SidebarProps) {
       {/* Sidebar */}
       <nav
         className={cn(
-          "fixed lg:sticky top-0 left-0 z-50 h-screen shrink-0 border-r transition-all duration-300 ease-in-out",
+          "fixed lg:sticky top-16 left-0 z-40 h-[calc(100vh-4rem)] shrink-0 border-r transition-all duration-300 ease-in-out",
           "border-djkn-200 bg-white shadow-sm",
           open ? "w-64" : "w-16",
-          // Mobile: hidden unless open
           !open && "hidden lg:block"
         )}
       >
