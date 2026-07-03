@@ -88,3 +88,25 @@ export async function listAnnouncements({ limit }: { limit?: number } = {}): Pro
   const response = await getAnnouncements({ limit: limit || 3 });
   return response.data;
 }
+
+export async function getAnnouncementCount(): Promise<number> {
+  const supabase = await createClient();
+  
+  try {
+    const { count, error } = await supabase
+      .from("announcements")
+      .select("*", { count: "exact", head: true });
+
+    if (error) {
+      console.error("Error counting announcements:", error.message);
+      return 0;
+    }
+
+    return count || 0;
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      console.error("Unexpected error counting announcements:", err.message);
+    }
+    return 0;
+  }
+}

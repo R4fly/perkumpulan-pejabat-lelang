@@ -80,3 +80,25 @@ export async function getRegulations(
     };
   }
 }
+
+export async function getRegulationCount(): Promise<number> {
+  const supabase = await createClient();
+  
+  try {
+    const { count, error } = await supabase
+      .from("regulations")
+      .select("*", { count: "exact", head: true });
+
+    if (error) {
+      console.error("Error counting regulations:", error.message);
+      return 0;
+    }
+
+    return count || 0;
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      console.error("Unexpected error counting regulations:", err.message);
+    }
+    return 0;
+  }
+}
